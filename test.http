@@ -1,0 +1,98 @@
+3b86f9a7551c1b569d6c25e5ec4575ddef9f390f3e27d7929ef014757a6663c4dcb2c72d8d97122a
+###
+GET http://localhost:3000
+
+###
+POST http://localhost:3000/user/register
+Content-Type: application/json
+
+{
+    "email":"chsreenivas92@gmail.com",
+    "password":"abcdefghabcdefghq",
+    "firstName":"cde",  
+    "lastName":"eaasasda"
+}
+###
+POST http://localhost:3000/user/verifyOtp
+Content-Type: application/json
+
+{
+    "email":"chsreenivas92@gmail.com",
+    "otp":"211060"
+}
+
+###
+
+POST http://localhost:3000/user/emailVerification
+Content-Type: application/json
+
+{
+    "email":"chsreenivas92@gmail.com",
+    "type": "RESET_PASSWORD"
+}
+
+###
+POST http://localhost:3000/user/login
+Content-Type: application/json
+
+{
+    "email":"test53@GMAIL.com",
+    "password":"abcdefgh"
+}
+###
+
+###
+GET http://localhost:3000/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QzMkBnbWFpbC5jb20iLCJpYXQiOjE2MjEzMjQ2MDAsImV4cCI6MTYyMTMyNTUwMH0.byCmY9c__xSZ2695bIfS-k7C2iuhYsADyvREc-nUDIU
+
+###
+DELETE http://localhost:3000/user/604db71ae9a887500869dbad
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QzMkBnbWFpbC5jb20iLCJpYXQiOjE2MjEzMjQ2MDAsImV4cCI6MTYyMTMyNTUwMH0.byCmY9c__xSZ2695bIfS-k7C2iuhYsADyvREc-nUDIU
+
+###
+
+PATCH http://localhost:3000/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3Q1MUBnbWFpbC5jb20iLCJpYXQiOjE2MjEzMjM3MzYsImV4cCI6MTYyMTMyNDYzNn0.B0hg3kxUDbpvy_-jLopxU6j4wtK56TQVe0hZBSVd4PU
+Content-Type: application/json
+
+{
+    "firstName":"ABC"
+}
+
+###
+POST http://localhost:3000/user/token
+Content-Type: application/json
+
+{
+    "refreshToken":"730a99ab67b2394da9950abbe998cb13de5460253a6df9b10c7c5491bee9efbaf80a1cab1418bdae",
+    "email": "test32@gmail.com"
+}
+###
+POST http://localhost:3000/user/logoff
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3Q1MUBnbWFpbC5jb20iLCJpYXQiOjE2MjEzMjM3MzYsImV4cCI6MTYyMTMyNDYzNn0.B0hg3kxUDbpvy_-jLopxU6j4wtK56TQVe0hZBSVd4PU
+Content-Type: application/json
+
+###
+
+GET http://localhost:3000/user/all
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QzMkBnbWFpbC5jb20iLCJpYXQiOjE2MjEzMjQ2MDAsImV4cCI6MTYyMTMyNTUwMH0.byCmY9c__xSZ2695bIfS-k7C2iuhYsADyvREc-nUDIU
+
+###
+
+POST http://localhost:3000/test
+Content-Type: application/json
+Authorization: token xxx
+
+{
+    "testName":"aabc",
+    "QuestionsCount":"10",
+    "testCreator":"604f070cb8f40de4359e25c2",
+    "createdDate":"",
+    "dueDate":"",
+    "questions":[],
+    "testLink":""
+    
+}
+
+//Can a user delete his own account
