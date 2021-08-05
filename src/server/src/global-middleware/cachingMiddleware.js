@@ -61,8 +61,8 @@ const cachingMiddleware = {
     return accessToken;
   },
   getCachedResponse(req, res, next) {
-    const key = cacheKeyGenerator.generateKey(req.baseUrl, req.user.email);
-    logger.info(key, req.user.email);
+    const key = cacheKeyGenerator.generateKey(req);
+    logger.info(`Cachekey generated: ${key}`);
     if (key) {
       client.get(key, (err, result) => {
         if (err == null && result != null) {
@@ -74,15 +74,15 @@ const cachingMiddleware = {
             if (cache) {
               client.set(key, JSON.stringify(body), 'EX', process.env.ACCESS_TOKEN_EXPIRY_INTEGER, (error) => {
                 if (error) logger.error('Failed to cache', error);
-                res.sendResponse(body);
               });
-            } else {
-              res.sendResponse(body);
             }
+            res.sendResponse(body);
           };
           next();
         }
       });
+    } else {
+      next();
     }
   },
   revokeAllTokens(email) {
@@ -92,9 +92,16 @@ const cachingMiddleware = {
   revokeAccessToken(email) {
     client.del(TOKEN_TYPES.ACCESS_TOKEN + email);
   },
-  revokeCachedResponses(url, email) {
-    const key = cacheKeyGenerator.generateKey(url, email);
-    client.del(key);
+  revokeCachedResponses(req, res, next) {
+    console.log('revoking cached responses');
+    const key = cacheKeyGenerator.generateKey(req, res);
+    if (key) {
+      if (Array.isArray(key)) {
+        key.forEach((k) => client.del(k));
+      } else {
+        client.del(key);
+      }
+    }
   },
   addTokenToBlackList({ token, expiryTime, email }) {
     // B for blacklisted
@@ -130,6 +137,7 @@ const cachingMiddleware = {
     logger.info(`is token blacklisted:${isBlacklisted}`);
     return isBlacklisted;
   },
+
 };
 
 module.exports = cachingMiddleware;

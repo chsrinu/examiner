@@ -15,7 +15,8 @@ const { ErrorHandler } = error;
 const { HTTP_STATUS_CODES, TOKEN_TYPES, USER_STATUS, EMAIL_TYPE } = enums;
 const { generateAccessToken, generateRefreshToken } = tokenizer;
 
-const userCache = new LruCache(process.env.USER_LRU_CACHE_SIZE);
+const altKeyGenerator = (user) => (user.email);
+const userCache = new LruCache('UserCache', process.env.USER_LRU_CACHE_SIZE, altKeyGenerator);
 
 const userService = {
   async create(param) {
@@ -34,7 +35,7 @@ const userService = {
     const { firstName, lastName, email } = user;
     return { firstName, lastName, email };
   },
-  async update(user, updates, tokenDetails, reqCacheUrl) {
+  async update(user, updates, tokenDetails) {
     const { firstName, lastName, oldPassword, newPassword } = updates;
     let passwordUpdated = false;
     if (firstName) {
@@ -51,13 +52,14 @@ const userService = {
       } else throw new ErrorHandler(HTTP_STATUS_CODES.UNAUTHORIZED_401, 'Current password is Invalid');
     }
     const updatedUser = await user.save();
+    userCache.updateValue(updatedUser.email, updatedUser);
     if (updatedUser) {
       // revoke all the tokens and other cache entries
       if (passwordUpdated) {
         this.logoff(tokenDetails);
       }
-      cachingMiddleware.revokeCachedResponses(reqCacheUrl, user.email);
-      logger.info('Removed all the cache responses and tokens');
+      // cachingMiddleware.revokeCachedResponses(reqCacheUrl, user.email);
+      // logger.info('Removed all the cache responses and tokens');
     } else {
       logger.error('User object undefined, unable to update');
       this.throwServerError();
@@ -74,6 +76,14 @@ const userService = {
     if (!user) {
       user = await UserModel.findOne({ email });
       if (user) userCache.set(email, user);
+    }
+    return user;
+  },
+  async findUserById(id) {
+    let user = userCache.get(id);
+    if (!user) {
+      user = await UserModel.findOne({ _id: id });
+      if (user) userCache.set(id, user);
     }
     return user;
   },
@@ -148,12 +158,21 @@ const userService = {
       throw new ErrorHandler(HTTP_STATUS_CODES.UNAUTHORIZED_401, 'OTP Invalid/Expired');
     }
   },
+  async forgotPassword(email, otp, newPassword) {
+    await this.verifyOTP(email, otp);
+    const user = await this.findUserByEmailId(email);
+    user.password = newPassword;
+    await user.save();
+  },
   logoff(params) {
     cachingMiddleware.revokeAccessToken(params.email);
     cachingMiddleware.addTokenToBlackList(params);
   },
   throwServerError() {
     throw new ErrorHandler(HTTP_STATUS_CODES.SERVER_ERROR_500, 'Internal Server error');
+  },
+  getUserCache() {
+    return userCache;
   },
 };
 

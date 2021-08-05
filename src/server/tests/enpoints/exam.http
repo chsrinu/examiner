@@ -1,0 +1,310 @@
+
+GET http://localhost:3000
+
+###
+POST http://localhost:3000/exam
+Authorization: Bearer 
+Content-Type: application/json
+
+{
+  "name": "test22",
+  "examinerEmail": "test55@gmail.com",
+  "durationInMins": "20",
+  "maxMarks": "40",
+  "examTakerCategory": "SCHOOL_KID",
+  "questions":[
+      {
+            "question":"ABACD",
+                "type": "MULTIPLE_CHOICE_QUESTION_WITH_MULTIPLE_ANSWERS",
+                "options":[{
+                    "optionValue":"v0",
+                    "isAnswer":true
+                },{
+                    "optionValue":"v1 "
+                },{
+                    "optionValue":"v2"
+                },{
+                    "optionValue":"v3"
+                },{
+                    "optionValue":"v5",
+                    "isAnswer":true
+                }]
+            }
+  ]
+  
+}
+
+###
+
+GET http://localhost:3000/exam/:examId
+Authorization: Bearer 
+###
+GET http://localhost:3000/exam/editMode/:examId
+Authorization: Bearer 
+
+###
+GET http://localhost:3000/exam?examinerEmail=examinerEmail&examName=examName
+Authorization: Bearer 
+
+###
+
+GET http://localhost:3000/exam/answerKey/:examId
+Authorization: Bearer 
+
+### updating a question on top level and adding and removing questions
+PATCH http://localhost:3000/exam/examDetails
+Authorization: Bearer 
+Content-Type: application/json
+
+{
+    "examId":"examId",
+    "updates":{
+        "questions":[{
+            "id":"questionId",
+            "newValue":"a>bc??"
+        }
+            
+        ]
+    }
+}
+###
+PATCH http://localhost:3000/exam/examDetails
+Authorization: Bearer 
+Content-Type: application/json
+
+{
+    "examId":"examId",
+    "updates":{
+        "deleteQuestions":[
+            "questionId"
+        ]
+    }
+}
+###
+
+PATCH http://localhost:3000/exam/examDetails
+Content-Type: application/json
+
+{
+    "examId":"examId",
+    "updates":{
+        "newQuestions":[
+            {
+                "question":"ABACD",
+                "type": "FILL_IN_THE_BLANK",
+                "options":[
+                    {
+                        "optionValue":"abc",
+                        "isAnswer":true
+                    }
+                ]
+            }
+        ]
+    }
+}
+
+### updating a single question in depth
+PATCH http://localhost:3000/exam/examDetails
+Content-Type: application/json
+
+{
+    "examId":"examId",
+    "updates":{
+        "questions":[
+            {
+                "id":"questionId",
+                "newValue":"AAAAA",
+                "options":[{
+                    "id":"optionId",
+                    "newValue":"v7"
+                }],
+               
+                "deleteOptions":[
+                    "optionId"
+                ]
+            }
+        ]
+    }
+}
+### Answers update
+PATCH http://localhost:3000/exam/examDetails
+Content-Type: application/json
+
+{
+    "examId":"examId",
+    "updates":{
+        "maxMarks":"38 ",
+        "questions":[
+            {
+                "id":"questionId",
+                "answers":{
+                   "markAnswers":[
+                       "optionId"
+                   ],
+                    "unmarkAnswers":[
+                        "optionId"
+                        
+                    ]
+                }
+            }
+        ]
+    }
+}
+###
+PATCH http://localhost:3000/exam/examDetails
+Content-Type: application/json
+
+{
+    "examId":"examId",
+    "updates":{
+        "questions":[
+            {
+                "id":"questionId",
+                "answers":{
+                    "markAnswers":[
+                        "optionId",
+                        "optionId"
+                    ],
+                    "unmarkAnswers":[
+                        "optionId",
+                        "optionId"
+                    ]
+                }
+            }
+        ]
+    }
+}
+
+### update answers alone inside exam
+
+PATCH http://localhost:3000/exam/examDetails
+Content-Type: application/json
+
+{
+    "examId":"examId",
+    "updates":{
+        "questions":[
+            {
+                "id": "questionId",
+                "answers":{
+                    "markAnswers":[
+                        "optionId"
+                    ]
+                }
+            }
+        ]
+    }
+}
+
+### validation checks testing
+
+POST http://localhost:3000/exam
+Content-Type: application/json
+
+{
+  "name": "test1",
+  "examinerEmail": "test55@gmail.com",
+  "durationInMins": "20",
+  "maxMarks": "25",
+  "examTakerCategory": "SCHOOL_KID",
+  "questions":[
+      {
+          "question":"<script>alert('abc')</script>",
+          "type":"MULTIPLE_CHOICE_QUESTION_WITH_SINGLE_ANSWER",
+          
+          "options":[{
+              "optionValue":"<script>alert('abc')</script>",
+              "isAnswer": true
+          },{
+              "optionValue":"val2"
+          },{
+              "optionValue":"val3"
+          }]
+      },
+      {
+          "question":"ABACV",
+          "type": "MULTIPLE_CHOICE_QUESTION_WITH_MULTIPLE_ANSWERS",
+          "options":[{
+              "optionValue":"v0",
+              "isAnswer":true
+          },{
+              "optionValue":"v1",
+              "isAnswer":true
+          },{
+              "optionValue":"v2"
+          },{
+              "optionValue":"v3"
+          },{
+              "optionValue":"v5"
+          }]
+      }
+  ]
+}
+### extra params in request body needs to be checked,
+
+POST http://localhost:3000/exam
+Content-Type: application/json
+
+{
+  "name": "test11",
+  "examinerEmail": "test55@gmail.com",
+  "durationInMins": "20",
+  "maxMarks": "25",
+  "test":"test",
+  "examTakerCategory": "YAYYY",
+  "questions":[
+      {
+          "question":"<script>alert('abc')</script>",
+          "type":"MULTIPLE_CHOICE_QUESTION_WITH_SINGLE_ANSWER",
+          "test":"test",
+          "options":[{
+              "optionValue":"<script>alert('abc')</script>",
+              "isAnswer": true
+          },{
+              "optionValue":"val2",
+              "test":"test"
+          },{
+              "optionValue":"val3"
+          }]
+      },
+      {
+          "question":"ABACV",
+          "type": "MULTIPLE_CHOICE_QUESTION_WITH_MULTIPLE_ANSWERS",
+          "options":[{
+              "optionValue":"v0",
+              "isAnswer":true
+          },{
+              "optionValue":"v1",
+              "isAnswer":true
+          },{
+              "optionValue":"v2"
+          },{
+              "optionValue":"v3"
+          },{
+              "optionValue":"v5"
+          }]
+      }
+  ]
+}
+
+###
+POST http://localhost:3000/exam/submitAnswers
+Content-Type: application/json
+
+{
+    "id": "examId",
+    "answers": 
+        {
+            "questionId":[{
+                "id": "optionId"
+            },{
+                "id": "optionId"
+            }],
+            "60ff04b7728d1f47948b3b83":[{
+                "id": "optionId"
+            }],
+            "61024bc2a449d01e249f4eb9":[{
+                "value":"optionValue"
+            }]
+        }
+}

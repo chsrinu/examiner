@@ -4,16 +4,18 @@ const app = express();
 require('dotenv').config();
 require('./server/globals/fileImportWrapper');
 
-const { HTTP_STATUS_CODES } = include('server/src/helpers/enums');
 include('server/src/global-services/dbService');
+const { HTTP_STATUS_CODES } = include('server/src/helpers/enums');
 const logger = include('server/src/helpers/logger')(__filename);
 const { userRoute } = include('server/src/modules/user/routes');
+const { examRoute } = include('server/src/modules/exam/routes');
 const { error } = include('server/src/helpers');
 const { handleError, ErrorHandler } = error;
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use('/user', userRoute);
+app.use('/exam', examRoute);
 app.get('/', (req, res) => {
   res.send('Welcome to examiner');
 });
