@@ -8,7 +8,7 @@
 const mongoose = require('mongoose');
 const { check, body, validationResult } = require('express-validator');
 
-const { HTTP_STATUS_CODES, USER_ERRORS, EMAIL_TYPE } = include('server/src/helpers/enums');
+const { HTTP_STATUS_CODES, USER_ERRORS, EMAIL_TYPE, COMMON_ERRORS } = include('server/src/helpers/enums');
 const { userService } = include('server/src/modules/user/services');
 const registerParms = ['email', 'firstName', 'lastName', 'password'];
 const updateParams = ['firstName', 'lastName', 'oldPassword', 'newPassword'];
@@ -16,6 +16,7 @@ const loginParams = ['email', 'password'];
 const accessTokenBody = ['email', 'refreshToken'];
 const otpReqBody = ['email', 'otp'];
 const emailVerificationReqBody = ['email', 'type'];
+const forgotPasswordReqBody = ['email', 'otp', 'newPassword'];
 
 const inputValidator = {
   validateUserInRequestBody() {
@@ -25,28 +26,32 @@ const inputValidator = {
         .withMessage(USER_ERRORS.EMPTY_EMAIL)
         .isEmail()
         .withMessage(USER_ERRORS.INVALID_EMAIL)
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
         .trim()
-        .escape()
         .normalizeEmail(),
       check(registerParms[1])
         .exists()
         .withMessage(USER_ERRORS.EMPTY_FIRSTNAME)
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
         .trim()
-        .escape()
         .isLength({ min: 3, max: 16 })
         .withMessage(USER_ERRORS.FIRSTNAME_LENGTH_NOT_WITHIN_LIMITS),
       check(registerParms[2])
         .exists()
         .withMessage(USER_ERRORS.EMPTY_LASTNAME)
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
         .trim()
-        .escape()
         .isLength({ min: 3, max: 16 })
         .withMessage(USER_ERRORS.LASTNAME_LENGTH_NOT_WITHIN_LIMITS),
       check(registerParms[3])
         .exists()
         .withMessage(USER_ERRORS.EMPTY_PASSWORD)
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
         .trim()
-        .escape()
         .isLength({ min: 8, max: 16 })
         .withMessage(USER_ERRORS.PASSWORD_LENGTH_NOT_WITHIN_LIMITS),
       body().custom((reqBody) => Object.keys(reqBody)
@@ -71,26 +76,30 @@ const inputValidator = {
     return [
       check(updateParams[0])
         .optional()
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
         .trim()
-        .escape()
         .isLength({ min: 3, max: 16 })
         .withMessage(USER_ERRORS.FIRSTNAME_LENGTH_NOT_WITHIN_LIMITS),
       check(updateParams[1])
         .optional()
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
         .trim()
-        .escape()
         .isLength({ min: 3, max: 16 })
         .withMessage(USER_ERRORS.LASTNAME_LENGTH_NOT_WITHIN_LIMITS),
       check(updateParams[2])
         .optional()
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
         .trim()
-        .escape()
         .isLength({ min: 8, max: 16 })
         .withMessage(USER_ERRORS.PASSWORD_LENGTH_NOT_WITHIN_LIMITS),
       check(updateParams[3])
         .optional()
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
         .trim()
-        .escape()
         .isLength({ min: 8, max: 16 })
         .withMessage(USER_ERRORS.PASSWORD_LENGTH_NOT_WITHIN_LIMITS),
       body().custom((reqBody) => (!(Boolean(reqBody.oldPassword) ^ Boolean(reqBody.newPassword))))
@@ -116,14 +125,16 @@ const inputValidator = {
         .withMessage(USER_ERRORS.EMPTY_EMAIL)
         .isEmail()
         .withMessage(USER_ERRORS.INVALID_EMAIL)
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
         .trim()
-        .escape()
         .normalizeEmail(),
       check(loginParams[1])
         .exists()
         .withMessage(USER_ERRORS.EMPTY_PASSWORD)
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
         .trim()
-        .escape()
         .isLength({ min: 8, max: 16 })
         .withMessage(USER_ERRORS.PASSWORD_LENGTH_NOT_WITHIN_LIMITS),
       body().custom((reqBody) => Object.keys(reqBody).every((key) => loginParams.includes(key)))
@@ -163,14 +174,16 @@ const inputValidator = {
         .withMessage(USER_ERRORS.EMPTY_EMAIL)
         .isEmail()
         .withMessage(USER_ERRORS.INVALID_EMAIL)
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
         .trim()
-        .escape()
         .normalizeEmail(),
       check(accessTokenBody[1])
         .exists()
         .withMessage(USER_ERRORS.EMPTY_REFRESH_TOKEN)
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
         .trim()
-        .escape()
         .isLength({ min: 80, max: 80 })
         .withMessage(USER_ERRORS.INVALID_REFRESH_TOKEN),
       body().custom((reqBody) => Object.keys(reqBody).every((key) => accessTokenBody.includes(key)))
@@ -196,12 +209,16 @@ const inputValidator = {
         .withMessage(USER_ERRORS.EMPTY_EMAIL)
         .isEmail()
         .withMessage(USER_ERRORS.INVALID_EMAIL)
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
         .trim()
-        .escape()
         .normalizeEmail(),
       check(otpReqBody[1])
         .exists()
         .withMessage(USER_ERRORS.EMPTY_OTP)
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
+        .trim()
         .isLength({ min: 6, max: 6 })
         .withMessage(USER_ERRORS.OTP_INVALID_LENGTH),
       body().custom((reqBody) => Object.keys(reqBody).every((key) => otpReqBody.includes(key)))
@@ -228,15 +245,18 @@ const inputValidator = {
         .withMessage(USER_ERRORS.EMPTY_EMAIL)
         .isEmail()
         .withMessage(USER_ERRORS.INVALID_EMAIL)
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
         .trim()
-        .escape()
         .normalizeEmail(),
       check(emailVerificationReqBody[1])
         .exists()
         .withMessage(USER_ERRORS.INVALID_VERIFICATION_REASON)
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
         .trim()
-        .escape()
-        .isIn(Object.keys(EMAIL_TYPE)),
+        .isIn(Object.keys(EMAIL_TYPE))
+        .withMessage(USER_ERRORS.INVALID_EMAIL_TYPE),
       body().custom((reqBody) => Object.keys(reqBody)
         .every((key) => emailVerificationReqBody.includes(key)))
         .withMessage(USER_ERRORS.EXTRA_PARAMS),
@@ -252,6 +272,35 @@ const inputValidator = {
           next();
         }
       },
+    ];
+  },
+  forgotPasswordValidation() {
+    return [
+      check(forgotPasswordReqBody[0])
+        .exists()
+        .withMessage(USER_ERRORS.EMPTY_EMAIL)
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
+        .isEmail()
+        .withMessage(USER_ERRORS.INVALID_EMAIL)
+        .trim()
+        .normalizeEmail(),
+      check(forgotPasswordReqBody[1])
+        .exists()
+        .withMessage(USER_ERRORS.EMPTY_OTP)
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
+        .trim()
+        .isLength({ min: 6, max: 6 })
+        .withMessage(USER_ERRORS.OTP_INVALID_LENGTH),
+      check(forgotPasswordReqBody[2])
+        .exists()
+        .withMessage(USER_ERRORS.MISSING_PASSWORD)
+        .isString()
+        .withMessage(COMMON_ERRORS.EXPECTED_STRING)
+        .trim()
+        .isLength({ min: 8, max: 16 })
+        .withMessage(USER_ERRORS.PASSWORD_LENGTH_NOT_WITHIN_LIMITS),
     ];
   },
 };

@@ -20,16 +20,15 @@ const userController = {
   },
   async login(req, res, next) {
     try {
-      const result = await userService.login(req.body);
-      res.status(HTTP_STATUS_CODES.SUCCESS_200).send(result);
+      res.send(await userService.login(req.body));
     } catch (err) {
       next(err);
     }
   },
   async read(req, res, next) {
     try {
-      const user = await userService.read(req.user, next);
-      res.status(200).send(user, true);
+      const user = await userService.read(req.user);
+      res.send(user, true);
     } catch (err) {
       next(err);
     }
@@ -37,9 +36,9 @@ const userController = {
   async update(req, res, next) {
     try {
       await userService
-        .update(req.user, req.body, getParametersForBlacklistingAtoken(req), req.baseUrl);
+        .update(req.user, req.body, getParametersForBlacklistingAtoken(req));
       res.status(200).send('Update success');
-      // }
+      next();
     } catch (err) {
       next(err);
     }
@@ -90,6 +89,15 @@ const userController = {
       const { email, otp } = req.body;
       await userService.verifyOTP(email, otp);
       res.status(HTTP_STATUS_CODES.SUCCESS_200).send('User email verified');
+    } catch (err) {
+      next(err);
+    }
+  },
+  async forgotPassword(req, res, next) {
+    try {
+      const { email, otp, newPassword } = req.body;
+      await userService.forgotPassword(email, otp, newPassword);
+      res.status(HTTP_STATUS_CODES.SUCCESS_200).send('Password reset success, please login with new password');
     } catch (err) {
       next(err);
     }

@@ -98,7 +98,7 @@ describe('UserService TestSuite', () => {
         savedUser.email,
         savedUser.firstName,
         savedUser.verificationCode.code,
-        EMAIL_TYPE.USER_REGISTRATION
+        EMAIL_TYPE.USER_REGISTRATION,
       );
     });
     it('Verify correct OTP', async () => {

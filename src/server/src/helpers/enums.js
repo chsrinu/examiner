@@ -40,6 +40,9 @@ exports.USER_ERRORS = {
   EMPTY_OTP: 'OTP field is mandatory for email verification',
   EXTRA_OR_INVALID_PARAMS_IN_OTP: 'Some extra params are sent, which are invalid in email verification',
   INVALID_VERIFICATION_REASON: 'Invalid email verification reason',
+  MISSING_PASSWORD: 'Password is mandatory while resetting the password',
+  INVALID_EMAIL_TYPE: 'Email type is Invalid',
+
 };
 
 /* Error messages that can be used by middleware in responses
@@ -48,10 +51,41 @@ exports.QUESTION_ERRORS = {
 
 };
 
+exports.COMMON_ERRORS = {
+  EXPECTED_ARRAY: 'Expected the value of this element to be an array',
+  EXPECTED_STRING: 'Expected the value of this element to be a string',
+  EXPECTED_BOOLEAN: 'Expected the value of this element to be a boolean',
+  EXPECTED_OBJECT: 'Expected the value of this element to be an Object',
+};
+
 /* Error messages that can be used by middleware in responses
 when validation fails  @rest endpoint https://<BASE_URL>/test */
-exports.TEST_ERRORS = {
-
+exports.EXAM_ERRORS = {
+  EXAM_NAME_MISSING: 'Exam name is missing',
+  EXAMINER_EMAIL_MISSING: 'Examiner email is missing',
+  EXAM_DURATION_MISSING: 'Exam duration is missing',
+  EXAM_MARKS_MISSING: 'Exam marks are missing',
+  EXAMTAKER_CATEGORY_MISSING: 'Exam taker category is missing',
+  EXAM_NAME_LENGTH_VALIDATION_FAILURE: 'Exam name length should be between 3 and 16',
+  INVALID_EXAMINER_EMAIL: 'Examiner email is invalid',
+  INVALID_NUMBER_IN_EXAM_DURATION: 'Please provide a valid number for exam duration in mins',
+  INVALID_NUMBER_IN_EXAM_MARKS: 'Please provide a valid number in maximum marks',
+  INVALID_EXAM_ID: 'Missing/Invalid mongoose ID',
+  INVALID_QUESTION_TYPE: 'Invalid question type',
+  MISSING_UPDATES_ELEMENT: 'Updates element is missing',
+  EXPECTED_ARRAY: 'Expected the value of this element to be an array',
+  EXPECTED_STRING: 'Expected the value of this element to be a string',
+  EXPECTED_BOOLEAN: 'Expected the value of this element to be a boolean',
+  EXPECTED_OBJECT: 'Expected the value of this element to be an Object',
+  QUESTION_LENGTH_VALIDATION_FAILURE: 'Length of this question is either below 5 or beyond 600 characters',
+  OPTION_LENGTH_VALIDATION_FAILURE: 'Length of this option is either below 1 or beyond 150 characters',
+  EMPTY_ARRAY: 'Array should not be Empty',
+  EMPTY_OBJECT: 'Empty object found, please check..',
+  INVALID_OPTIONS_UPDATE: 'Missing option id or newValue in option update',
+  INVALID_PROPERTIES_FOUND: 'Found some invalid params which cannot be processed',
+  UPDATES_MISSING: 'Properties that needs to be updated are missing',
+  MISSING_ANSWERS_OBJECT: 'Answers are missing in your submission',
+  MISSING_MANDATORY_PROPS: 'Some mandatory params are missing/empty, please check',
 };
 
 exports.roles = {
@@ -72,9 +106,23 @@ exports.TOKEN_TYPES = {
 
 exports.PATH_SPECIFIC_CACHE_KEYS = {
   USER_PATH: 'user_',
+  EXAM_PATH: 'exam_',
 };
 
 exports.EMAIL_TYPE = {
   USER_REGISTRATION: 'USER_REGISTRATION',
   RESET_PASSWORD: 'RESET_PASSWORD',
 };
+
+exports.QUESTION_TYPES = [
+  'MULTIPLE_CHOICE_QUESTION_WITH_SINGLE_ANSWER',
+  'MULTIPLE_CHOICE_QUESTION_WITH_MULTIPLE_ANSWERS',
+  'FILL_IN_THE_BLANK',
+  'TRUE_OR_FALSE',
+];
+
+exports.EXAMTAKER_CATEGORY = [
+  'SCHOOL_KID',
+  'COLLEGE_STUDENT',
+  'EMPLOYEE',
+];

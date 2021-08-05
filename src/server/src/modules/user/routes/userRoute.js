@@ -15,13 +15,14 @@ router.post('/login', v.validateUserLoginCreds(), c.login);
 router.post('/token', v.validateAccessTokenReqBody(), c.token);
 router.post('/verifyOtp', v.validateOtpReqBody(), c.verifyOTP);
 router.post('/emailVerification', v.validateEmailVerificationReqbody(), c.generateOTP);
+router.patch('/forgotPassword', v.forgotPasswordValidation(), c.forgotPassword);
 
 router.use('/', auth.authenticateToken);
 // routes having the access token
 router
   .route('/')
   .get(cachingMiddleware.getCachedResponse, c.read)
-  .patch(v.validateExisitingFields(), c.update);
+  .patch(v.validateExisitingFields(), c.update, cachingMiddleware.revokeCachedResponses);
 
 router.post('/logoff', c.logoff);
 
