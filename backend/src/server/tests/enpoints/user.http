@@ -1,0 +1,109 @@
+
+###
+GET http://localhost:3000
+
+###
+POST http://localhost:3000/user/register
+Content-Type: application/json
+
+{
+    "email":"test55@gmail.com",
+    "password":"abcdefghabcdefghq",
+    "firstName":"cde",  
+    "lastName":"eaasasda"
+}
+###
+POST http://localhost:3000/user/verifyOtp
+Content-Type: application/json
+
+{
+    "email":"test55@gmail.com",
+    "otp":"211060"
+}
+
+###
+
+POST http://localhost:3000/user/emailVerification
+Content-Type: application/json
+
+{
+    "email":"test55@gmail.com",
+    "type": "RESET_PASSWORD"
+}
+
+###
+POST http://localhost:3000/user/emailVerification
+Content-Type: application/json
+
+{
+    "email":"test55@gmail.com",
+    "type": "USER_REGISTRATION"
+}
+
+###
+POST http://localhost:3000/user/login
+Content-Type: application/json
+
+{
+    "email":"test55@gmail.com",
+    "password":"abcdefgh"
+}
+###
+
+###
+POST http://localhost:3000/user/login
+Content-Type: application/json
+
+{
+    "email":"test55@gmail.com",
+    "password":"abcdefgh"
+}
+###
+###output for above http call would be
+###{
+###    "accessToken":"XXXX"
+###} 
+
+###
+GET http://localhost:3000/user
+Authorization: Bearer 
+
+###
+DELETE http://localhost:3000/user/userId
+Authorization: Bearer 
+
+###
+
+PATCH http://localhost:3000/user
+Authorization: Bearer 
+Content-Type: application/json
+
+{
+    "firstName":"abcdefgh"
+}
+###
+PATCH http://localhost:3000/user/forgotPassword
+Content-Type: application/json
+
+{
+    "email":"test55@gmail.com",
+    "otp":"268570",
+    "newPassword":"abcdefgh"
+}
+###
+POST http://localhost:3000/user/token
+Content-Type: application/json
+
+{
+    "email": "test53@gmail.com"
+}
+###
+POST http://localhost:3000/user/logoff
+Authorization: Bearer 
+Content-Type: application/json
+
+###
+
+GET http://localhost:3000/user/all
+Content-Type: application/json
+Authorization: Bearer 
