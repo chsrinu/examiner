@@ -12,7 +12,7 @@ const tokenCookieName = 'refreshToken';
 const cookieCreateOptions = {
   // expiring the refresh token after 120 days
   // maxAge: 1000 * 60 * 60 * 24,
-  maxAge: 1000 * 60 * 60 * 24,
+  maxAge: 1000 * 60 * 60 * 24 * 120,
   httpOnly: true,
   path: '/user/token',
   // TODO secure: true, uncomment this once https is enabled

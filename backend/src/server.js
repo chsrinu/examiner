@@ -21,9 +21,6 @@ app.use(cookieParser());
 
 app.use('/user', userRoute);
 app.use('/exam', examRoute);
-app.get('/api', (req, res) => {
-  res.send('Welcome to examiner');
-});
 
 // handles all the 404 errors
 app.use((req, res, next) => {

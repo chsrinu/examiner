@@ -180,14 +180,6 @@ const inputValidator = {
         .withMessage(COMMON_ERRORS.EXPECTED_STRING)
         .trim()
         .normalizeEmail(),
-      // check(accessTokenBody[1])
-      //   .exists()
-      //   .withMessage(USER_ERRORS.EMPTY_REFRESH_TOKEN)
-      //   .isString()
-      //   .withMessage(COMMON_ERRORS.EXPECTED_STRING)
-      //   .trim()
-      //   .isLength({ min: 80, max: 80 })
-      //   .withMessage(USER_ERRORS.INVALID_REFRESH_TOKEN),
       body().custom((reqBody) => Object.keys(reqBody).every((key) => accessTokenBody.includes(key)))
         .withMessage(USER_ERRORS.EXTRA_OR_INVALID_PARAMS_IN_TOKEN_REQUEST),
       body().custom(async (reqBody) => {
